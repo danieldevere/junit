@@ -25,8 +25,10 @@ public class Employee {
 	private Long id;
 	
 	private String firstname;
+	
 	@Column(nullable=false)
 	private String lastname;
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="employeeId")
 	private List<AnnualReview> reviews;

@@ -3,6 +3,8 @@ package com.maroons.junit.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -28,15 +30,15 @@ import com.maroons.junit.repository.EmployeeRepository;
 @SpringBootTest
 public class EmployeeServiceTests {
 	
-	public EmployeeServiceTests() {
-		MockitoAnnotations.initMocks(this.getClass());
-	}
-
 	@Mock
 	private EmployeeRepository employeeRepository;
 	
 	@InjectMocks
 	private EmployeeService employeeService;
+	
+	public EmployeeServiceTests() {
+		MockitoAnnotations.initMocks(this.getClass());
+	}
 	
 	@Before
 	public void beforeTests() {
@@ -55,21 +57,24 @@ public class EmployeeServiceTests {
 				return null;
 			}
 		};
-		when(employeeRepository.getEmployeeById(any(Long.class))).thenAnswer(employeeRepositoryGetEmployeeByIDAnswer);
+		when(employeeRepository.getEmployeeById(any(Long.class)))
+			.thenAnswer(employeeRepositoryGetEmployeeByIDAnswer);
 		
 		Answer<Integer> employeeRepositorySave = new Answer<Integer>() {
 			public Integer answer(InvocationOnMock invocation) throws Throwable {
 				return 0;
 			}
 		};
-		when(employeeRepository.save(any(Employee.class))).thenAnswer(employeeRepositorySave);
+		when(employeeRepository.save(any(Employee.class)))
+			.thenAnswer(employeeRepositorySave);
 		
 		Answer<Integer> employeeRepositoryDelete = new Answer<Integer>() {
 			public Integer answer(InvocationOnMock invocation) throws Throwable {
 				return 0;
 			}
 		};
-		doAnswer(employeeRepositoryDelete).when(employeeRepository).delete(any(Long.class));
+		doAnswer(employeeRepositoryDelete)
+			.when(employeeRepository).delete(any(Long.class));
 	}
 	
 	@Test
@@ -98,6 +103,8 @@ public class EmployeeServiceTests {
 	public void updateEmployee() throws Exception {
 		Employee employee = new Employee(1, "Dan", "DeVere");
 		employeeService.updateEmployee(employee);
+		verify(employeeRepository, times(1)).getEmployeeById(new Long(1));
+		
 	}
 	
 	@Test(expected=EmployeeNotFound.class)

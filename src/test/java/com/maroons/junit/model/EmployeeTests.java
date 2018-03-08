@@ -41,14 +41,14 @@ public class EmployeeTests {
 	}
 	
 	@Test
-	public void getAnnualReview() throws Exception {
+	public void getAnnualReviewTest() throws Exception {
 		employee.setReviews(annualReviews);
 		AnnualReview foundReview = employee.getAnnualReview(2018);
 		assertThat(foundReview.getYear()).isEqualTo(2018);
 	}
 	
 	@Test
-	public void getCurrentReview() throws Exception {
+	public void getCurrentReviewTest() throws Exception {
 		employee.setReviews(annualReviews);
 		AnnualReview foundReview = employee.getCurrentReview();
 		assertThat(foundReview.getYear()).isEqualTo(Calendar.getInstance().get(Calendar.YEAR));
